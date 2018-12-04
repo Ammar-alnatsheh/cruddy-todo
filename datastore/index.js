@@ -8,9 +8,8 @@ var items = {};
 // Public API - Fix these CRUD functions ///////////////////////////////////////
 
 exports.create = (text, callback) => {
-
-  counter.getNextUniqueId((err,id) => {
-    if(err) {
+  counter.getNextUniqueId((err, id) => {
+    if (err) {
       console.log('error getting next id');
     } else {
       var name = './test/testData/' + id.toString() + '.txt';
@@ -18,39 +17,23 @@ exports.create = (text, callback) => {
         if (err) {
           console.log('cannot write file');
         } else {
-          callback(null, { id, text })
+          callback(null, { id, text });
         }
-      })
+      });
     }
-  })
+  });
 };
-
-// fs.readdir(testFolder, (err, files) => {
-//   files.forEach(file => {
-//     console.log(file);
-//   });
-// })
 
 exports.readAll = (callback) => {
   var data = [];
   fs.readdir('./test/testData', (err, files) => {
-    files.forEach(file => {
-     
-      console.log(file);
-    
-
-
+    _.each(files, file => {
+      var id = file.split('.')[0];
+      console.log(id);
+      data.push({id, text: id});
     });
-    // _.each(files, (text, id) => {
-    //   console.log(id);
-    //   console.log(text);
-    //   data.push({id, text})
-    // })
+    callback(null, data);
   });
-  // _.each(items, (text, id) => {
-  //   data.push({ id, text });
-  // });
-  callback(null, data);
 };
 
 exports.readOne = (id, callback) => {
